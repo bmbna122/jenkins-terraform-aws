@@ -36,17 +36,17 @@ pipeline {
             steps {
                 script {
                     sh "minikube start --driver=docker"
+                    
+                    // Note the backslash before $(aws...)
                     sh """
                     kubectl delete secret ecr-secret || true
                     kubectl create secret docker-registry ecr-secret \
                         --docker-server=${REPOSITORY_URI} \
                         --docker-username=AWS \
-                        --docker-password=$(aws ecr get-login-password --region ${AWS_REGION})
+                        --docker-password=\$(aws ecr get-login-password --region ${AWS_REGION})
                     """
                     sh "kubectl apply -f deployment.yaml"
-
                     sh "kubectl rollout restart deployment/my-app-deployment"
-                        
                 }
             }
         }
