@@ -5,11 +5,12 @@ metadata:
 spec:
   replicas: 2
   selector:
-    mathlabels:
+    mathLabels:
       app: web-app
   template:
     metadata:
-      app: web-app
+      labels:
+        app: web-app
     spec:
       containers:
       - name: web-container
