@@ -18,7 +18,7 @@ pipeline {
                 script {
                     sh "sed -i 's/PIPELINE_BUILD_NUMBER/${env.BUILD_NUMBER}/g' index.html"
                     sh "docker build -t ${IMAGE_REPO}:${IMAGE_TAG} ."
-                    sh "docker tag ${IMAGE_REPO}:${IMAGE_TAG} ${REPOSITORY_URL}/${IMAGE_REPO}:latest"
+                    sh "docker tag ${IMAGE_REPO}:${IMAGE_TAG} ${REPOSITORY_URI}/${IMAGE_REPO}:latest"
                 }
             }
         }
