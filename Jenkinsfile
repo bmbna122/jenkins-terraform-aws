@@ -32,5 +32,23 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to kubernetes') {
+            steps {
+                script {
+                    sh "minikube start --driver=docker"
+                    sh """
+                    kubectl delete secret ecr-secret || true
+                    kubectl create secret docker-registry ecr-secret \
+                        --docker-server=${REPOSITORY_URI} \
+                        --docker-username=AWS \
+                        --docker-password=$(aws ecr get-login-password --region ${AWS_REGION})
+                    """
+                    sh "kubectl apply -f deployment.yaml"
+
+                    sh "kubectl rollout restart deployment/my-app-deployment"
+                        
+                }
+            }
+        }
      } 
 }
