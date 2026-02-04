@@ -5,7 +5,7 @@ pipeline {
         AWS_REGION = "us-east-1"
         IMAGE_REPO = "my-jenkins-app"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO}"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
      }
      stages {
         stage('Checkout') {
@@ -25,9 +25,9 @@ pipeline {
         stage('Push to ECR') {
             steps {
                 script {
-                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URL}"
-                    sh "docker push ${REPOSITORY_URL}/${IMAGE_REPO}:latest"
-                    sh "docker psuh ${REPOSITORY_URL}/${IMAGE_REPO}:${IMAGE_TAG}"
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URI}"
+                    sh "docker push ${REPOSITORY_URI}/${IMAGE_REPO}:latest"
+                    sh "docker psuh ${REPOSITORY_URI}/${IMAGE_REPO}:${IMAGE_TAG}"
                 }
             }
         }
